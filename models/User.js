@@ -25,6 +25,30 @@ const userSchema = new mongoose.Schema({
 }
 );
 
+const User = mongoose.model('User', userSchema);
+
+// const userData = [
+//   { username: 'kperkins58', email:'kperkins@yahoo.com'},
+//   { username: 'rturner32', email: 'rturner@yahoo.com' },
+// ];
+
+// User.create(
+//   { user: employeeData },
+//   (err, data) => {
+//     if (err) {
+//       console.error(err);
+//     }
+//     console.log(data);
+//   }
+// );
+
+// Book.create(
+//   {
+//     username: 'kperkins',
+//     email: 'kperkins@yahoo.com'
+//   },
+//   (err) => (err ? handleError(err) : console.log('Created new document'))
+// );
 // Create a virtual property `friendCount` that gets the amount of comments per post
 userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
