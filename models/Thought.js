@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types} = require('mongoose');
 const moment = require('moment');
 
 
-const thoughtSchema = new mongoose.Schema({
+const thoughtSchema = new Schema({
   thoughtText:{
     type: String,
     required: true,
@@ -44,6 +44,7 @@ const reactionSchema = new Schema({
         type: Date,
         default: Date.now,
         //Use a getter method to format the timestamp on query
+        get: createdAtVal => moment(createdAtVal).format('M/D [at] hh:mm a')
     }
 },
     {
@@ -55,15 +56,33 @@ const reactionSchema = new Schema({
     }
 );
 
-const reactionData = [
-    { reactionId: '', reactionBody:'', username:'kperkins@yahoo.com'},
-    { reactionId: '', reactionBody:'', username:'kperkins@yahoo.com'}
-  ];
-  
 // Create a virtual property `reactionCount` that gets the amount of comments per post
-thouhgtSchema.virtual('reactionCount').get(function () {
+thouhgtSchema.virtual('reactionCount').get(function () 
+{
   return this.reactions.length;
 });
 
 const Thought = model('Thought', thoughtSchema)
 module.exports = Thought
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const reactionData = [
+//     { reactionId: '', reactionBody:'', username:'kperkins@yahoo.com'},
+//     { reactionId: '', reactionBody:'', username:'kperkins@yahoo.com'}
+//   ];
+  

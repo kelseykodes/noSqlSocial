@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
 // const Thought = require('./Thought');
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   username:{
     type: String,
     unique: true,
@@ -13,19 +13,42 @@ const userSchema = new mongoose.Schema({
   type: String,
   required: true,
   unique: true,
+  },
   //Must look into mongoose's matching validation
   validate: {},
+
     thoughts: [ {type: Schema.Types.ObjectId, ref: 'Thought'} ],
     friends: [{type: Schema.Types.ObjectId, ref: 'User'}]
  },
  //NOT SURE WHY AN ERROR HERE
  {
-  toJSON: { virtuals: true },
+  toJSON: { virtuals: true, getters: true },
   id: false
 }
 );
 
 const User = mongoose.model('User', userSchema);
+
+
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+});
+
+const User = model('User', UserSchema)
+module.exports = User
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // const userData = [
 //   { username: 'kperkins58', email:'kperkins@yahoo.com'},
@@ -50,9 +73,3 @@ const User = mongoose.model('User', userSchema);
 //   (err) => (err ? handleError(err) : console.log('Created new document'))
 // );
 // Create a virtual property `friendCount` that gets the amount of comments per post
-userSchema.virtual('friendCount').get(function () {
-  return this.friends.length;
-});
-
-const User = model('User', UserSchema)
-module.exports = User
