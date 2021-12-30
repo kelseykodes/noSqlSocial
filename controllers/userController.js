@@ -59,7 +59,8 @@ module.exports = {
     addFriend(req, res) {
       User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $push: { friends: req.params.friendId } },
+        //could be $push
+        { $addToSet: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       )
         .then((userData) =>
@@ -83,3 +84,4 @@ module.exports = {
         .catch((e) => { console.log(e); res.status(500).json(e); });  
   },
 };
+// module.exports = userController;

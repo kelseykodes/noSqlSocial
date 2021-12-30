@@ -22,7 +22,7 @@ module.exports = {
 
   createThought(req, res) {
     Thought.create(req.body)
-      .then(({ _id }) => {
+      .then(thoughtData => {
         return User.findOneAndUpdate(
           { _id: req.body.userId },
           { $push: { thoughts: thoughtData._id } },
@@ -50,7 +50,7 @@ module.exports = {
     .catch((e) => { console.log(e); res.status(500).json(e); });   
   },
   deleteThought(req, res) {
-    Thought.findOneAndRemove({ _id: req.params.id })
+    Thought.findOneAndDelete({ _id: req.params.id })
       .then((deleteThought) =>
         !deleteThought
           ? res.status(404).json({ message: 'wrong id!' })
@@ -69,10 +69,10 @@ module.exports = {
       )
       .catch((e) => { console.log(e); res.status(500).json(e); });  
   },
-  // TODO: Add comments to the functionality of the addTag method
   createReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
+      //could be $push
       { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
     )
@@ -83,7 +83,6 @@ module.exports = {
       )
       .catch((e) => { console.log(e); res.status(500).json(e); });  
   },
-  // TODO: Add comments to the functionality of the addTag method
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
