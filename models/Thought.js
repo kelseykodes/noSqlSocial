@@ -2,30 +2,6 @@ const mongoose = require('mongoose');
 const { Schema, model, Types} = require('mongoose');
 const moment = require('moment');
 
-
-const thoughtSchema = new Schema({
-  thoughtText:{
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 280
- },
-  createdAt: {
-  type: Date,
-  default: Date.now,
-  },
-  username: {
-    type: String,
-    required: true
- },
- reactions: [reactionSchema]
-},
- {
-  toJSON: { virtuals: true },
-  id: false
-}
-);
-
 const reactionSchema = new Schema({
     reactionId: {
         type: Schema.Types.ObjectId,
@@ -53,8 +29,32 @@ const reactionSchema = new Schema({
     }
 );
 
+
+const thoughtSchema = new Schema({
+  thoughtText:{
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 280
+ },
+  createdAt: {
+  type: Date,
+  default: Date.now,
+  },
+  username: {
+    type: String,
+    required: true
+ },
+ reactions: [reactionSchema]
+},
+ {
+  toJSON: { virtuals: true },
+  id: false
+}
+);
+
 // Create a virtual property `reactionCount` that gets the amount of comments per post
-thouhgtSchema.virtual('reactionCount').get(function () 
+thoughtSchema.virtual('reactionCount').get(function () 
 {
   return this.reactions.length;
 });
