@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
-// const Thought = require('./Thought');
 
 const userSchema = new Schema({
   username:{
@@ -17,24 +16,21 @@ const userSchema = new Schema({
   //Must look into mongoose's matching validation
   validate: {},
 
-    thoughts: [ {type: Schema.Types.ObjectId, ref: 'Thought'} ],
-    friends: [{type: Schema.Types.ObjectId, ref: 'User'}]
+  thoughts: [ {type: Schema.Types.ObjectId, ref: 'Thought'} ],
+  friends: [{type: Schema.Types.ObjectId, ref: 'User'}]
  },
- //NOT SURE WHY AN ERROR HERE
  {
   toJSON: { virtuals: true, getters: true },
   id: false
 }
 );
 
-const User = mongoose.model('User', userSchema);
-
 
 userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
 
-const User = model('User', UserSchema)
+const User = mongoose.model('User', userSchema);
 module.exports = User
 
 
