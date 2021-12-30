@@ -38,70 +38,64 @@ module.exports = {
      })
     .catch((e) => { console.log(e); res.status(500).json(e); }); 
   },
-  // TODO: Add comments to the functionality of the updateApplication method
   updateThought(req, res) {
     Thought.findOneAndUpdate(
-      { _id: req.params.applicationId },
-      { $set: req.body },
-      { runValidators: true, new: true }
-    )
-      .then((application) =>
-        !application
-          ? res.status(404).json({ message: 'No application with this id!' })
-          : res.json(application)
+      { _id: req.params._id },
+      { $set: req.body })
+      .then((thoughtData) => 
+        !thoughtData
+          ? res.status(404).json({ message: 'wrong id!' })
+          : res.json(thoughtData)
       )
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+    .catch((e) => { console.log(e); res.status(500).json(e); });   
   },
-  // TODO: Add comments to the functionality of the deleteApplication method
   deleteThought(req, res) {
     Thought.findOneAndRemove({ _id: req.params.id })
-      .then((application) =>
-        !application
-          ? res.status(404).json({ message: 'No application with this id!' })
+      .then((deleteThought) =>
+        !deleteThought
+          ? res.status(404).json({ message: 'wrong id!' })
           : User.findOneAndUpdate(
-              { applications: req.params.applicationId },
-              { $pull: { applications: req.params.applicationId } },
+              { username: deleteThought.username },
+              { $pull: { thoughts: req.params.id } },
               { new: true }
             )
       )
       .then((user) =>
         !user
           ? res.status(404).json({
-              message: 'Application created but no user with this id!',
+              message: 'wrong user id!',
             })
-          : res.json({ message: 'Application successfully deleted!' })
+          : res.json({ message: 'successfully deleted!' })
       )
-      .catch((err) => res.status(500).json(err));
+      .catch((e) => { console.log(e); res.status(500).json(e); });  
   },
   // TODO: Add comments to the functionality of the addTag method
   createReaction(req, res) {
-    Application.findOneAndUpdate(
-      { _id: req.params.applicationId },
-      { $addToSet: { tags: req.body } },
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
     )
-      .then((application) =>
-        !application
-          ? res.status(404).json({ message: 'No application with this id!' })
-          : res.json(application)
+      .then((thoughtData) =>
+        !thoughtData
+          ? res.status(404).json({ message: 'No thoughtData with this id!' })
+          : res.json(thoughtData)
       )
-      .catch((err) => res.status(500).json(err));
+      .catch((e) => { console.log(e); res.status(500).json(e); });  
   },
   // TODO: Add comments to the functionality of the addTag method
   deleteReaction(req, res) {
-    Application.findOneAndUpdate(
-      { _id: req.params.applicationId },
-      { $pull: { tags: { responseId: req.params.tagId } } },
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: params.reactionId } }},
       { runValidators: true, new: true }
     )
-      .then((application) =>
-        !application
-          ? res.status(404).json({ message: 'No application with this id!' })
-          : res.json(application)
+      .then((thoughtData) =>
+        !thoughtData
+          ? res.status(404).json({ message: 'wrong thought id!' })
+          : res.json(thoughtData)
       )
-      .catch((err) => res.status(500).json(err));
+      .catch((e) => { console.log(e); res.status(500).json(e); });  
   },
 };
+// module.exports = thoughtController;
