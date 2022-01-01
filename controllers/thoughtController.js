@@ -62,8 +62,8 @@ module.exports = {
       )
       .then((user) =>
         !user
-          ? res.status(404).json({
-              message: 'wrong user id!',
+          ? res.status(200).json({
+              message: 'successfully deleted!',
             })
           : res.json({ message: 'successfully deleted!' })
       )

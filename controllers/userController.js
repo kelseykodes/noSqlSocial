@@ -71,7 +71,7 @@ module.exports = {
         .catch((e) => { console.log(e); res.status(500).json(e); });  
     },
     deleteFriend(req, res) {
-      User.findOneAndUpdate(
+      User.findOneAndDelete(
         { _id: req.params.friendId },
         { $pull: { reactions: { friends: req.params.friendId } }},
         { runValidators: true, new: true }
